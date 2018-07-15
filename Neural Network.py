@@ -5,7 +5,7 @@ import tensorflow as tf #Im only using tensorflow to grab images from the mnist 
 
 #this neural network has 784 input nodes, 16 in the first hidden layer, 16 in the second hidden layer, and 10 in the output.
 #This will use the mnist database to identify handwritten numbers
-
+#NOTE: this requires the MNIST database to work
 def sig(x):
     o=[]
     for i in range(len(x)):
