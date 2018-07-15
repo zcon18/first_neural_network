@@ -84,7 +84,7 @@ class NeuralNetwork:
             #self.temp.append(self.A1[i]) #adds hidden layer 1 activation
         #for i in range(16):
             #self.temp.append(self.A2[i]) #adds hidden layer 2 activation
-        for i in range(10):
+        for i in range(len(self.output)):
             self.temp.append(self.output[i]) #adds output layer activation
         self.mem.append(self.temp)
     def cost(self):
