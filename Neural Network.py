@@ -1,7 +1,11 @@
 
-import numpy as np
+import numpy as np 
 import random
-import tensorflow as tf
+import tensorflow as tf #Im only using tensorflow to grab images from the mnist database
+
+#this neural network has 784 input nodes, 16 in the first hidden layer, 16 in the second hidden layer, and 10 in the output.
+#This will use the mnist database to identify handwritten numbers
+
 def sig(x):
     o=[]
     for i in range(len(x)):
@@ -36,18 +40,18 @@ def Lcal(a,w,b): #this caculates the activation for each node in each layer minu
     return a2
 def Dbais(z,a,y): #Caculates the pratial dervitive for one bias for one test case
     return sigD(z)*2*(a-y)
-def Dbais(z,x):
+def Dbais(z,x): #this just the same one as above but its for futher incaments to the chain rule, when we go futher back in the neural network
     return sigD(z)*x
 def Dweight(apre,z,a,y): #Cain rule for weights
     return apre*sigD(z)*2*(a-y)
-def Dweight(apre,z,x):
+def Dweight(apre,z,x): #overloaded version
     return apre*sigD(z)*x
 def Dact(con,w,z,a,y): #because one node will affect more than one node in the output layer you need to take thoses spacifice weights
     o=0
     for i in range(len(w)-1):
         o += w[con][i] * sigD(z[i]) * 2 * (a[i] - y)
     return o
-def Dact(con,w,z,x):
+def Dact(con,w,z,x): #for the first hidden layer
     o=0
     for i in range(len(w)-1):
         o += w[con][i] * sigD(z[i]) * x
@@ -94,11 +98,11 @@ class NeuralNetwork:
         self.addboi=[] #This is a second temp list to hold the added case right before we avarage
         self.gradV=[] # this holds the vector
         self.holder=0 #this is used to grab the correct number in the vertor for a bias/weight
-        for i in range(len(self.mem)-1):
+        for i in range(len(self.mem)-1): #TODO: check this math here
             for j in range(len(self.mem[i])-1):
                 for k in range(len(self.B3)-1):
                     self.temp3[i].append(Dbais(self.Z3[j], self.mem[i][j], self.y[i][j]))
-                for k in range(len(self.W3[j])-1):
+                for k in range(len(self.W3[j])-1): #this is one of the things Im unsure of here, becasue par-D cost over par-D W is just the activation but there are more weights than the activations so is it the
                     self.temp3[i].append(Dweight(self.A2[j], self.Z3[j], self.mem[i][j], self.y[i][j]))
                 for k in range(len(self.B2)-1):
                     self.temp3[i].append(Dbais(self.Z2[k],Dact(k,self.W3,self.Z3,self.mem[i][j],self.y[i][j])))
@@ -162,7 +166,7 @@ if __name__ == "__main__":
     #end
     nn = NeuralNetwork(x,y)
     for i in range(len(x)):
-        for j in range(1500):
+        for j in range(100): #sets batch size as one hundred
             nn.feedforward()
         print(nn.cost)
         nn.backprop()
